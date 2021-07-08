@@ -11,6 +11,7 @@ enable_testing()
 
 find_package( OpenCV REQUIRED )
 find_package( Threads REQUIRED )
+find_package( nlohmann_json 3.2.0 REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
@@ -18,6 +19,7 @@ add_executable(${PROJECT_NAME}
     "source_files/main.cpp"
     "source_files/lbp_descriptor.cpp"
     "source_files/lbp_classifier.cpp"
+    "source_files/image.cpp"
 )
 
 if (UNIX)
@@ -32,6 +34,7 @@ if (WIN32)
   target_link_libraries(${PROJECT_NAME} 
     ${OpenCV_LIBS} 
     ${CMAKE_THREAD_LIBS_INIT}
+    nlohmann_json::nlohmann_json
   )
 endif(WIN32)
 

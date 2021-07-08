@@ -1,25 +1,33 @@
-#include "../header_files/lbp_descriptor.hpp"
-
+#include "../header_files/lbp_classifier.hpp"
 
 int main(int argc, char *argv[]){
 
-    Mat imagen = imread("../resources_files/textura.png", IMREAD_GRAYSCALE);
+    setlocale(LC_ALL, "");
 
-    LBPDescriptor *lbpd = new LBPDescriptor();
+    // Mat imagen = imread("../resources_files/textura.png", IMREAD_GRAYSCALE);
 
-    vector<int> des = lbpd->lbp(imagen);
+    // LBPDescriptor *lbpd = new LBPDescriptor();
 
-    for (int i = 0; i < des.size(); i++) {
-        cout << des[i] << ", ";
-    }
+    // vector<int> des = lbpd->lbp(imagen);
 
-    cout << endl;
+    // for (int i = 0; i < des.size(); i++) {
+    //     cout << des[i] << ", ";
+    // }
 
+    // cout << endl;
+
+    LBPClassifier *lblClassifier = new LBPClassifier();
+    // lblClassifier->train("../resources_files/train");
+    lblClassifier->predict("../resources_files/test");
+
+    // lblClassifier->printMap(lblClassifier->OUTPUT_CLASSES);
+
+    // cout << lblClassifier->OUTPUT_CLASSES << endl;
     // namedWindow("Textura", WINDOW_AUTOSIZE);
     // imshow("Textura", imagen);
     // waitKey(0);
 
-    cv::destroyAllWindows();
+    // cv::destroyAllWindows();
       
 
     return 0;
