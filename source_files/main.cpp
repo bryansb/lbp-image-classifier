@@ -18,7 +18,10 @@ int main(int argc, char *argv[]){
 
     LBPClassifier *lblClassifier = new LBPClassifier();
     // lblClassifier->train("../resources_files/train");
-    lblClassifier->predict("../resources_files/test");
+    lblClassifier->predict("../resources_files/test", "forest");
+    cout << endl;
+    cout << endl;
+    lblClassifier->predict("../resources_files/test", "buildings");
 
     // lblClassifier->printMap(lblClassifier->OUTPUT_CLASSES);
 

@@ -43,7 +43,7 @@ class LBPClassifier {
 
         LBPClassifier();
         void train(string rootTrainPath);
-        void predict(string rootTestPath);
+        void predict(string rootTestPath, string observableValue);
 
         vector<string> split(string cad, char sep);
 };

@@ -23,7 +23,7 @@ void LBPClassifier::train(string rootTrainPath){
     saveDescriptorToJson("train.json", this->imageTrainList);
 }
 
-void LBPClassifier::predict(string rootTestPath){
+void LBPClassifier::predict(string rootTestPath, string observableValue){
     this->loadDescriptorFromJson("train.json", this->imageTrainList);
     this->loadData(rootTestPath, this->imageTestList);
 
@@ -58,10 +58,31 @@ void LBPClassifier::predict(string rootTestPath){
     }
 
     int nTest = (int)imageTestList.size();
+    int tp = 0;
+    int tn = 0;
+    int fp = 0;
+    int fn = 0;
+    cout << endl;
     for (int i = 0; i < nTest; i++) {
         bool correct = imageTestList[i].getClassLabel() == predictionList[i] ? true : false;
-        cout << "Original: " << imageTestList[i].getClassLabel() << "\t Preddiction: " << predictionList[i] << "\tHit: " << correct << endl;
+        
+        if (correct && imageTestList[i].getClassLabel() == observableValue) {
+            tp += 1;
+        } else if (correct && imageTestList[i].getClassLabel() != observableValue) {
+            tn += 1;   
+        } else if (!correct && imageTestList[i].getClassLabel() == observableValue) {
+            fp += 1;
+        } else {
+            fn += 1;
+        }
+        cout << "Original: " << imageTestList[i].getClassLabel() << "\t Preddiction: " << predictionList[i] << "\tCorrect: " << correct << endl;
     }
+
+    double precision = (double)tp / ((double)tp + (double)fp);
+
+    cout << endl;
+    cout << "Observable Variable: " << observableValue << "\tPrecision: " << precision << endl;
+    cout << "TP: " << tp << "\tFN: " << fn << "\tTN: " << tn << "\tFP: " << fp << endl;
 }
 
 double LBPClassifier::getEuclideanDistance(vector<int> histogram1, vector<int> histogram2) {
@@ -152,6 +173,7 @@ void LBPClassifier::loadDescriptorFromJson(string path, vector<Image> &imageList
     json j;
     i >> j;
 
+    imageList.clear();
     for (json::iterator it = j.begin(); it != j.end(); ++it) {
         // std::cout << it.key() << " : " << it.value()["a"] << "\n";
         vector<string> classLabel = split(it.key(), '-');
