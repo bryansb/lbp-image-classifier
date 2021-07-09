@@ -1,19 +1,6 @@
 #include "../header_files/lbp_classifier.hpp"
 
-LBPClassifier::LBPClassifier(){
-    // cout << this->outputClasses << endl;
-    // lbpd = new LBPDescriptor();
-
-    
-    // this->loadData(rootTestPath, this->imageTestList);
-
-    // for ( Image image :  this->imageTrainList) {
-    //     cout << image.getClassLabel() << endl;
-    // }
-
-    // cout << imageTrainList.size() <<  endl; 
-
-}
+LBPClassifier::LBPClassifier(){}
 
 void LBPClassifier::train(string rootTrainPath){
     this->loadData(rootTrainPath, this->imageTrainList);
@@ -122,7 +109,6 @@ void LBPClassifier::saveDescriptorToJson(string path, vector< Image > imageList)
     string json_to_save = "{";
 
     for (int i = 0; i < imageList.size(); i++) {
-        // descriptorJSON.push_back({imageList[i].getClassLabel(), {{1,2,3}, {1,2,3}, {1,2,3}}});
         string name = imageList[i].getClassLabel() + "-" + to_string(i);
         string lChannel = "[";
         string aChannel = "[";
@@ -157,11 +143,8 @@ void LBPClassifier::saveDescriptorToJson(string path, vector< Image > imageList)
     }
 
     json_to_save += "}";
-    
 
-    // cout << text << endl;
     json j_complete = json::parse(json_to_save);
-    // std::cout << std::setw(4) << j_complete << std::endl;
     std::ofstream o(path, std::ofstream::trunc);
     o << std::setw(4) << j_complete << std::endl;
     o.close();
@@ -175,7 +158,6 @@ void LBPClassifier::loadDescriptorFromJson(string path, vector<Image> &imageList
 
     imageList.clear();
     for (json::iterator it = j.begin(); it != j.end(); ++it) {
-        // std::cout << it.key() << " : " << it.value()["a"] << "\n";
         vector<string> classLabel = split(it.key(), '-');
         if (classLabel.size() > 1) {
             Image image("", classLabel[0]);
