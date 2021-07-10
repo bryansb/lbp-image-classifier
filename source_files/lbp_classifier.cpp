@@ -10,7 +10,7 @@ void LBPClassifier::train(string rootTrainPath){
     saveDescriptorToJson("train.json", this->imageTrainList);
 }
 
-void LBPClassifier::predict(string rootTestPath, string observableValue){
+void LBPClassifier::predict(string rootTestPath, string observableValue, bool printPred){
     this->loadDescriptorFromJson("train.json", this->imageTrainList);
     this->loadData(rootTestPath, this->imageTestList);
 
@@ -23,6 +23,7 @@ void LBPClassifier::predict(string rootTestPath, string observableValue){
         classLabel = "";
         minDistance = 0;
         for ( Image &imageTrain : imageTrainList ) {
+            // Cálculo de los descriptores y la distancia Euclidia.
             imageTest.setCIELabDescriptor();
             double distanceL = getEuclideanDistance(imageTest.lChannel, imageTrain.lChannel);
             double distanceA = getEuclideanDistance(imageTest.aChannel, imageTrain.aChannel);
@@ -51,8 +52,10 @@ void LBPClassifier::predict(string rootTestPath, string observableValue){
     int fn = 0;
     cout << endl;
     for (int i = 0; i < nTest; i++) {
-        bool correct = imageTestList[i].getClassLabel() == predictionList[i] ? true : false;
+        bool correct = imageTestList[i].getClassLabel() 
+            == predictionList[i] ? true : false;
         
+        // Matriz de confusión
         if (correct && imageTestList[i].getClassLabel() == observableValue) {
             tp += 1;
         } else if (correct && imageTestList[i].getClassLabel() != observableValue) {
@@ -62,9 +65,12 @@ void LBPClassifier::predict(string rootTestPath, string observableValue){
         } else {
             fn += 1;
         }
-        cout << "Original: " << imageTestList[i].getClassLabel() << "\t Preddiction: " << predictionList[i] << "\tCorrect: " << correct << endl;
+
+        if (printPred)
+            cout << "Original: " << imageTestList[i].getClassLabel() << "\t Preddiction: " << predictionList[i] << "\tCorrect: " << correct << endl;
     }
 
+    // Cálculo de la precisión
     double precision = (double)tp / ((double)tp + (double)fp);
 
     cout << endl;

@@ -27,7 +27,6 @@ namespace fs =  std::experimental::filesystem;
 
 class LBPClassifier {
     private:
-        // LBPDescriptor *lbpd;
         
         vector<Image> imageTrainList;
         vector<Image> imageTestList;
@@ -39,11 +38,10 @@ class LBPClassifier {
         void loadDescriptorFromJson(string path, vector< Image > &imageList);
 
     public:
-        const string OUTPUT_CLASSES [2] = {"forest", "buildings"};
 
         LBPClassifier();
         void train(string rootTrainPath);
-        void predict(string rootTestPath, string observableValue);
+        void predict(string rootTestPath, string observableValue, bool printPred=true);
 
         vector<string> split(string cad, char sep);
 };
